@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlayAkap - Make a Difference</title>
+    <meta name="description" content="AlayAkap - Making a difference through donations">
+    <meta name="theme-color" content="#ec4899">
+    <link rel="icon" href="icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Defined variables for consistency with dashboards */
+            --accent: #df1360;
+            --light-pink: #fce7f3;
+            --dark-gray: #374151;
+            --text-dark: #111;
+            --gray: #ccc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #e7e7e7;
+            color: #4b5563;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+            margin-left: 100px;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #831843;
+        }
+        
+        /* --- SIDEBAR STYLES (Fixed position) --- */
+        .sidebar {
+            width: 100px;
+            background: var(--accent);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            gap: 18px;
+            flex-shrink: 0;
+            position: fixed; 
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+        }
+        .logo-placeholder {
+            width: 80px;
+            height: 80px;
+            background-color: transparent;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .nav-item {
+            width: 100%;
+        }
+        .icon-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 65px;
+            text-decoration: none;
+            color: white;
+            transition: background 0.18s ease, transform .15s ease;
+            position: relative;
+        }
+        .icon-link i {
+            font-size: 28px;
+        }
+        .icon-link:hover {
+            background: rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .icon-link.active {
+            background: #fff;
+            color: var(--accent);
+            border-right: 5px solid white;
+            transform: translateY(-2px);
+        }
+        /* --- END SIDEBAR STYLES --- */
+        
+        /* --- HEADER & TITLE STYLES (Updated padding) --- */
+        .page-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 36px 1rem 0 36px; /* Increased left padding to 36px to match dashboard */
+            background-color: #e7e7e7; 
+        }
+        
+        h1.title { 
+            font-family: 'Poppins', sans-serif; 
+            font-weight: 900; 
+            font-size: 36px; 
+            margin: 0; 
+            color: var(--text-dark); 
+        }
+
+        .accent-line {
+            width: 180px; 
+            height: 6px; 
+            background: var(--accent); 
+            border-radius: 4px; 
+            margin: 12px 0 24px;
+            margin-left: 36px; /* MOVED ACCENT LINE to 36px */
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* --- PILL BUTTON STYLING (Updated padding and active state) --- */
+        .page-links-container {
+            padding: 0 1rem 20px 36px; /* Increased left padding to 36px */
+            margin-bottom: 30px;
+        }
+        .pill-links {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .pill {
+            text-decoration: none;
+            color: var(--dark-gray);
+            border: 2px solid #ddd;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .pill:hover {
+            background: var(--light-pink);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .pill.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        /* --- END PILL BUTTON STYLING --- */
+        
+        /* Hero Section */
+        .hero {
+            padding: 0 1rem 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: transparent; 
+        }
+        
+        .hero-content {
+            max-width: 64rem;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero h1 {
+            font-size: 3.75rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            color: #000000;
+        }
+        
+        .hero .highlight {
+            color: #ec4899;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: #4b5563;
+            margin-bottom: 0.5rem; /* Reduced margin to bring subtitle closer */
+            max-width: 42rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* NEW STYLE: Match How It Works section-title */
+        .hero-section-title {
+            text-align: center;
+            font-size: 2.25rem; 
+            font-weight: 700;
+            margin-bottom: 3.5rem; /* Increased space below subtitle */
+            margin-top: 9rem; /* Increased space above subtitle */
+            color: #111827; /* Dark text color */
+            font-family: 'Poppins', sans-serif; /* Ensure Poppins font is used */
+        }
+        
+        /* --- CAROUSEL STYLES (MODIFIED FOR COMPRESSION & CENTER) --- */
+        .carousel-container {
+            position: relative;
+            width: 90%;
+            max-width: 550px; /* MODIFIED: Limits the size of the carousel for compression */
+            height: 180px; /* MODIFIED: Reduced height for compression */
+            margin: 2rem auto;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            background: white;
+            padding: 15px; /* MODIFIED: Reduced padding */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* MODIFIED: Center the content */
+            text-align: center; /* MODIFIED: Center text content */
+        }
+
+        .slide-image {
+            width: 120px; /* MODIFIED: Smaller image for compression */
+            height: 120px; /* MODIFIED: Smaller image for compression */
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 20px;
+            border: 3px solid var(--accent);
+            flex-shrink: 0; /* Ensures image doesn't shrink unnecessarily */
+        }
+
+        .slide-info {
+            flex-grow: 1;
+            max-width: 60%; /* Give the text content a max-width to center it better */
+        }
+
+        .slide-info h3 {
+            font-size: 1.4rem; /* Slightly reduced font size */
+            font-weight: 900;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+
+        .slide-info p {
+            font-size: 0.85rem; /* Slightly reduced font size */
+            color: #6b7280;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+        
+        .slide-info .btn-donate {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 9999px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 5px; /* Reduced margin */
+            transition: background 0.2s;
+        }
+
+        .carousel-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            font-size: 2rem;
+            color: var(--accent);
+            cursor: pointer;
+            padding: 10px;
+            z-index: 20;
+            transition: background 0.2s;
+        }
+
+        .carousel-nav-btn:hover {
+            background: white;
+        }
+
+        #prevBtn {
+            left: 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        #nextBtn {
+            right: 0;
+            border-radius: 10px 0 0 10px;
+        }
+        
+        /* Fallback/Empty state */
+        .empty-carousel {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: white;
+            color: #6b7280;
+            text-align: center;
+        }
+        .empty-carousel h3 {
+            font-size: 1.5rem;
+            color: #111;
+        }
+        
+        /* --- END CAROUSEL STYLES --- */
+        
+        /* Section Styles */
+        .section {
+            padding: 4rem 1rem;
+        }
+        
+        .section-gray {
+            background: #f3f4f6;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: #4b5563;
+            margin-bottom: 3rem;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #111827;
+            color: #d1d5db;
+            padding: 4rem 1rem 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer h3 {
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer a {
+            color: #d1d5db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        .footer a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            max-width: 1280px;
+            margin: 0 auto;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            /* Restore full width and remove sidebar on small screens */
+            body {
+                margin-left: 0;
+            }
+            .sidebar {
+                display: none;
+            }
+            .page-header-container {
+                padding: 1rem 1rem 0; /* Reset padding for mobile */
+            }
+            .page-links-container {
+                padding: 0 1rem 20px; /* Reset padding for mobile */
+            }
+            .hero {
+                padding-top: 1rem; /* Adjust padding for smaller screens */
+            }
+        }
+        
+        /* New FAQ Utility Classes (now redundant but kept to avoid errors if other elements use them) */
+        .max-w-4xl { max-width: 56rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .hover\:bg-gray-100:hover { background-color: #f3f4f6; }
+        .transition { transition-property: all; }
+        .duration-300 { transition-duration: 300ms; }
+        .transform { transform: var(--tw-transform); }
+        .rotate-180 { --tw-rotate: 180deg; transform: var(--tw-transform) rotate(var(--tw-rotate)); }
+        .hidden { display: none; }
+        .text-gray-900 { color: #111827; }
+        .text-gray-600 { color: #4b5563; }
+        .bg-gray-50 { background-color: white; } 
+        .faq-item { border: 1px solid #fde6f5; } 
+        .text-gray-500 { color: #6b7280; }
+        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+        .font-medium { font-weight: 500; }
+        .p-4 { padding: 1rem; } 
+        .mt-3 { margin-top: 0.75rem; }
+        .leading-relaxed { line-height: 1.625; }
+
+        /* Custom Styles for a Better Match with the Image (FAQ related styles, now unused) */
+        .faq-item {
+            border: 1px solid #fce7f3; 
+            border-radius: 0.5rem; 
+            overflow: hidden; 
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        
+        .faq-header {
+            background-color: #fff; 
+            padding: 1rem 1.5rem; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .faq-question {
+            color: #1f2937; 
+            font-size: 1.125rem;
+            font-weight: 700; 
+            flex-grow: 1; 
+            position: relative;
+            padding-right: 30px; 
+        }
+        
+        .faq-answer {
+            background-color: #fff; 
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            box-shadow: inset 0 3px 6px -3px rgba(236, 72, 153, 0.1);
+            border-top: 1px solid #fce7f3; 
+        }
+        .faq-answer.open {
+            max-height: 300px; 
+            padding: 0.5rem 1.5rem 1.5rem; 
+        }
+        .faq-answer p {
+            margin-top: 0.5rem;
+            color: #4b5563;
+            font-weight: 400; 
+        }
+        
+        /* Pseudo-Element for Arrow Icon */
+        .faq-question:after {
+            content: '\2303'; 
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 15px; 
+            height: 15px;
+            color: #6b7280; 
+            font-size: 1rem;
+            line-height: 1;
+            /* Default state (closed/hidden answer): Pointing DOWN (180 deg) */
+            transform: translateY(-50%) rotate(180deg); 
+            transition: transform 0.3s;
+        }
+        
+        /* When the header is OPEN, the arrow points UP (0 deg) */
+        .faq-header.open .faq-question:after {
+            transform: translateY(-50%) rotate(0deg); 
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <aside class="sidebar">
+        <div class="logo-placeholder">
+            <img src="logo.png" alt="AlayAkap Logo">
+        </div>
+        <div class="nav-item"><a href="Homepage.html" class="icon-link active" title="Home"><i class="fa-solid fa-house"></i></a></div>
+        <div class="nav-item"><a href="donation_listing.html" class="icon-link" title="Donation Listings"><i class="fa-solid fa-list"></i></a></div>
+        <div class="nav-item"><a href="donor_dashboard.html" class="icon-link" title="Donor Dashboard"><i class="fa-solid fa-handshake"></i></a></div>
+        <div class="nav-item"><a href="recipient_dashboard.html" class="icon-link" title="Recipient Dashboard"><i class="fa-solid fa-hand-holding-heart"></i></a></div>
+        <div class="nav-item"><a href="notifications.html" class="icon-link" title="Notifications"><i class="fa-solid fa-bell"></i></a></div>
+    </aside>
+
+    <div class="page-header-title">
+        <div class="container mx-auto px-4">
+            <div class="page-header-container">
+                <a href="Homepage.html" style="text-decoration: none;">
+                    <h1 class="title">HOMEPAGE</h1>
+                </a>
+                <div class="auth-buttons">
+                    </div>
+            </div>
+            <div class="accent-line"></div>
+        </div>
+    </div>
+    <div class="page-links-container">
+        <div class="container mx-auto px-4">
+            <div class="pill-links">
+                <a href="aboutus.html" class="pill">About Us</a>
+                <a href="contactus.html" class="pill">Contact Us</a>
+                <a href="faq.html" class="pill">FAQ</a> </div>
+        </div>
+    </div>
+    <main>
+        <section class="hero" style="padding-top: 2rem;">
+            <div class="hero-content">
+                <h1>Making a Difference, <span class="highlight">One Donation at a Time</span></h1>
+                <p>Join thousands of others making real impact in communities worldwide. Every contribution counts, every story matters.</p>
+                
+                <div class="hero-section-title">Browse Active Requests Below!</div>
+
+                <div class="carousel-container">
+                    <button id="prevBtn" class="carousel-nav-btn" aria-label="Previous">❮</button>
+                    <div id="carouselTrack" class="carousel-track">
+                        <div class="empty-carousel">
+                            <h3>Loading Requests...</h3>
+                            <p>Please ensure `storage.js` is correctly loading data.</p>
+                        </div>
+                    </div>
+                    <button id="nextBtn" class="carousel-nav-btn" aria-label="Next">❯</button>
+                </div>
+                </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">Simple steps to start making a difference</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                    <div style="text-align: center; padding: 2rem; background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.15);">
+                        <div style="width: 4rem; height: 4rem; background: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: #4f46e5; font-size: 1.5rem; font-weight: 700;">1</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: #111827;">Create an Account</h3>
+                        <p style="color: #6b7280;">Sign up in seconds to start your journey of giving or requesting help.</p>
+                    </div>
+                    <div style="text-align: center; padding: 2rem; background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.15);">
+                        <div style="width: 4rem; height: 4rem; background: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: #4f46e5; font-size: 1.5rem; font-weight: 700;">2</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: #111827;">Browse or Post</h3>
+                        <p style="color: #6b7280;">Explore donation requests or post your own need for help.</p>
+                    </div>
+                    <div style="text-align: center; padding: 2rem; background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.15);">
+                        <div style="width: 4rem; height: 4rem; background: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: #4f46e5; font-size: 1.5rem; font-weight: 700;">3</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: #111827;">Make an Impact</h3>
+                        <p style="color: #6b7280;">Donate items and change lives, or receive the help you need.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-gray">
+            <div class="container">
+                <h2 class="section-title">Why Choose AlayAkap</h2>
+                <p class="section-subtitle">Safe, transparent, and impactful</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                    <div style="padding: 2rem; background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.15);">
+                        <div style="width: 4rem; height: 4rem; background: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="#4f46e5">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: #111827;">100% Secure</h3>
+                        <p style="color: #6b7280;">All transactions and data are protected with industry-leading security standards.</p>
+                    </div>
+                    <div style="padding: 2rem; background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.15);">
+                        <div style="width: 4rem; height: 4rem; background: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: #111827;">Transparent Impact</h3>
+                        <p style="color: #6b7280;">Track donations and see real-time updates on how help is delivered.</p>
+                    </div>
+                    <div style="padding: 2rem; background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.15);">
+                        <div style="width: 4rem; height: 4rem; background: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 20 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: #111827;">Community Driven</h3>
+                    <p style="color: #6b7280;">Join a community of givers and receivers making real impact together.</p>
+                </div>
+            </div>
+        </section>
+        </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h3>AlayAkap</h3>
+                <p style="font-size: 0.875rem; margin-top: 0.5rem;">Making a difference together, one donation at a time.</p>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <a href="Homepage.html">Home</a>
+                <a href="aboutus.html">About Us</a>
+                <a href="donation_listing.html">Donate</a>
+                <a href="recipient_dashboard.html">Request Help</a>
+            </div>
+            <div>
+                <h3>Dashboards</h3>
+                    <a href="donation_listing.html">Donation Listing</a>
+                    <a href="donor_dashboard.html">Donor Dashboard</a>
+                    <a href="recipient_dashboard.html">Recipient Dashboard</a>
+                    <a href="notifications.html">Notifications</a>
+            </div>
+            <div>
+                <h3>Contact</h3>
+                <p style="font-size: 0.875rem;">Agoo, La Union</p>
+                <p style="font-size: 0.875rem;">info@alay-akap.com</p>
+                <p style="font-size: 0.875rem;">+639 1234 56789</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 AlayAkap. All rights reserved.
+        </div>
+    </footer>
+    
+    <script src="storage.js"></script>
+    <script src="auth.js"></script>
+
+    <script>
+        // --- FAQ Toggle Function (Removed since FAQ content is gone) ---
+        // Retained only for compatibility if other elements accidentally call it, but its body is empty.
+        function toggleFAQ(contentId, headerId) {
+             console.warn("FAQ toggle function called, but FAQ section has been moved to faq.html.");
+        }
+
+        // --- CAROUSEL LOGIC ---
+        let currentSlide = 0;
+        let slides = [];
+        const track = document.getElementById('carouselTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const MAX_ITEMS = 5;
+
+        function updateCarousel() {
+            if (slides.length === 0) {
+                track.innerHTML = `
+                    <div class="carousel-slide empty-carousel">
+                        <h3>No Active Requests Available</h3>
+                        <p>Be the first to post a request or check back later!</p>
+                        <a href="donation_listing.html" class="btn-donate">Browse All Listings</a>
+                    </div>
+                `;
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+                return;
+            }
+
+            const offset = -currentSlide * 100;
+            track.style.transform = `translateX(${offset}%)`;
+
+            // Hide/show buttons based on slide position
+            prevBtn.style.display = (currentSlide === 0) ? 'none' : 'block';
+            nextBtn.style.display = (currentSlide === slides.length - 1) ? 'none' : 'block';
+        }
+
+        function loadRequestsIntoCarousel() {
+            // Ensure StorageManager is available (from storage.js)
+            if (typeof window.StorageManager === 'undefined') {
+                console.error("StorageManager is not loaded.");
+                return;
+            }
+
+            // Get all active requests, limit to MAX_ITEMS
+            const allRequests = window.StorageManager.getAllRequests() || [];
+            slides = allRequests
+                .filter(req => req.status.toLowerCase() === 'active')
+                .slice(0, MAX_ITEMS);
+
+            let carouselHTML = '';
+
+            if (slides.length === 0) {
+                updateCarousel();
+                return;
+            }
+
+            // Generate HTML for each slide
+            slides.forEach(req => {
+                carouselHTML += `
+                    <div class="carousel-slide">
+                        <img src="${req.img || 'https://via.placeholder.com/150x150?text=Item'}" alt="${req.title}" class="slide-image">
+                        <div class="slide-info">
+                            <h3>${req.title}</h3>
+                            <p><strong>Category:</strong> ${req.category}</p>
+                            <p><strong>Location:</strong> ${req.location}</p>
+                            <p>Needed: ${req.quantity || 1} item${req.quantity > 1 ? 's' : ''}</p>
+                            <a href="donation_listing.html" class="btn-donate">Donate Now</a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            track.innerHTML = carouselHTML;
+            currentSlide = 0;
+            updateCarousel();
+        }
+
+        // --- Event Listeners ---
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateCarousel();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateCarousel();
+            }
+        });
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRequestsIntoCarousel();
+        });
+    </script>
+    </body>
+</html>

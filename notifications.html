@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Notification Center | Alay AKAP</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --accent: #df1360;
+  --highlight: #4a4a4a;
+  --bg: #e7e7e7;
+  --light-gray: #f2f2f2;
+  --text-dark: #111;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+}
+
+.sidebar {
+  width: 100px;
+  background: var(--accent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
+  gap: 18px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 100;
+}
+
+.logo-placeholder {
+  width: 80px;
+  height: 80px;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: var(--accent);
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.nav-item { width: 100%; }
+
+.icon-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 65px;
+  text-decoration: none;
+  color: white;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.icon-link i {
+  font-size: 26px;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.icon-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.icon-link:hover i {
+  transform: scale(1.15);
+  color: #fff;
+}
+
+.icon-link.active {
+  background: #fff;
+  color: var(--accent);
+  border-right: 5px solid var(--highlight);
+  transform: translateY(-2px);
+}
+
+.icon-link.active i {
+  color: var(--accent);
+  transform: scale(1.1);
+}
+
+.main {
+  flex: 1;
+  padding: 36px;
+  margin-left: 100px;
+  overflow-y: auto;
+}
+
+h1.title {
+  font-weight: 900;
+  font-size: 36px;
+  margin: 0 0 8px;
+}
+
+.accent-line {
+  width: 180px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 4px;
+  margin: 12px 0 24px;
+}
+
+.filters-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.filter-btn {
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  font-weight: 700;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+  min-width: 110px;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  background: var(--light-gray);
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.notifications-wrap { margin-top: 8px; }
+
+.notif-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  /* Added cursor pointer to indicate clickability */
+  cursor: pointer;
+}
+
+.notif-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.notif-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.notif-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.notif-title {
+  font-weight: 800;
+  font-size: 17px;
+}
+
+.notif-body {
+  color: #2a2a2a;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.notif-time {
+  color: #666;
+  font-size: 13px;
+}
+
+.notif-badge {
+  position: absolute;
+  right: 16px;
+  top: 12px;
+  background: var(--accent);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.notif-dismiss {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  color: #666;
+  cursor: pointer;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.notif-dismiss:hover { opacity: 1; }
+
+.empty {
+  background: #fff;
+  padding: 40px;
+  text-align: center;
+  border-radius: 12px;
+  color: #777;
+  border: 1px dashed #ccc;
+}
+
+@media(max-width:900px){
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 18px; }
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="logo-placeholder" style="background-color: transparent; border: none;">
+    <img src="logo.png" alt="AlayAkap Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;">
+</div>
+  <div class="nav-item"><a href="Homepage.html" class="icon-link" title="Home"><i class="fa-solid fa-house"></i></a></div>
+  <div class="nav-item"><a href="donation_listing.html" class="icon-link" title="Donation Listings"><i class="fa-solid fa-list"></i></a></div>
+  <div class="nav-item"><a href="donor_dashboard.html" class="icon-link" title="Donor Dashboard"><i class="fa-solid fa-handshake"></i></a></div>
+  <div class="nav-item"><a href="recipient_dashboard.html" class="icon-link" title="Recipient Dashboard"><i class="fa-solid fa-hand-holding-heart"></i></a></div>
+  <div class="nav-item"><a href="notifications.html" class="icon-link active" title="Notifications"><i class="fa-solid fa-bell"></i></a></div>
+</aside>
+
+<main class="main">
+  <h1 class="title">NOTIFICATION CENTER</h1>
+  <div class="accent-line"></div>
+
+  <div class="filters-row" id="filtersRow">
+    <div class="filter-btn active" data-filter="all">🗂️ All</div>
+    <div class="filter-btn" data-filter="match">❤️ Matches</div>
+    <div class="filter-btn" data-filter="new_request">🎁 New Requests</div>
+    <div class="filter-btn" data-filter="update">✅ Updates</div>
+    <div class="filter-btn" data-filter="reminder">⏰ Reminders</div>
+  </div>
+
+  <div class="notifications-wrap" id="notificationsWrap"></div>
+</main>
+
+<script>
+// Storage Functions
+function generateId(prefix = 'n') { 
+  return prefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); 
+}
+
+function escapeHtml(str) { 
+  return String(str || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;'); 
+}
+
+function getCurrentUser() {
+  const userId = localStorage.getItem('ak_currentUser');
+  if (!userId) return null;
+  const users = JSON.parse(localStorage.getItem('ak_users') || '[]');
+  // Mock current user ID for demonstration purposes
+  return { id: 'user_123', name: 'Test User' }; 
+}
+
+function getAllNotifications() {
+  return JSON.parse(localStorage.getItem('ak_all_notifications') || '[]');
+}
+
+function setAllNotifications(notifications) {
+  localStorage.setItem('ak_all_notifications', JSON.stringify(notifications));
+}
+
+// --- UPDATED MOCK DATA FUNCTION ---
+function getMockNotifications(userId) {
+    const now = Date.now();
+    // Simulate data based on the user's role/context
+    return [
+        // 1. Target Notification: Donor sees their submitted donation status (Role: donor)
+        {
+            id: generateId('d'),
+            userId: userId,
+            type: 'update',
+            title: 'DONATION SUBMITTED', //
+            message: 'Your donation of 1 School Books has been submitted successfully. Status: Pending',
+            timestamp: now - (7 * 24 * 60 * 60 * 1000), // 7 days ago
+            icon: '🎁',
+            role: 'donor', 
+            requestId: 'don_abc', // Example donation ID
+            badge: true
+        },
+        // 2. Recipient Notification: New Match for their requested item (Role: recipient)
+        {
+            id: generateId('r1'),
+            userId: userId,
+            type: 'match',
+            title: 'DONATION MATCH FOUND', 
+            message: 'A donor has offered to fulfill your request for CASIO CALCULATOR.',
+            timestamp: now - (2 * 60 * 60 * 1000), // 2 hours ago
+            icon: '❤️',
+            role: 'recipient', 
+            requestId: 'req_1', // Must be a valid request ID on recipient dashboard
+            badge: true
+        },
+        // 3. General Reminder (Role: general/recipient)
+        {
+            id: generateId('r2'),
+            userId: userId,
+            type: 'reminder',
+            title: 'PICKUP REMINDER', // Corrected title to match storage.js function
+            message: 'Don\'t forget to coordinate pickup for "School Books" at specified location.',
+            timestamp: now - (1 * 24 * 60 * 60 * 1000), // 1 day ago
+            icon: '⏰',
+            role: 'recipient', 
+            badge: false
+        }
+    ].filter(n => n.userId === userId); // Filter based on the mock user ID
+}
+// --- END UPDATED MOCK DATA FUNCTION ---
+
+
+function getUserNotifications(userId) {
+  // Use mock data for testing deep-linking behavior
+  return getMockNotifications(userId);
+}
+
+function deleteNotification(notificationId) {
+  let notifications = getAllNotifications();
+  notifications = notifications.filter(n => n.id !== notificationId);
+  setAllNotifications(notifications);
+}
+
+function getTimeAgo(timestamp) {
+  const now = Date.now();
+  const diff = now - timestamp;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  
+  if (minutes < 1) return 'Just now';
+  if (minutes < 60) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  return `${days} day${days > 1 ? 's' : ''} ago`;
+}
+
+// Main Logic
+let activeFilter = 'all';
+const wrap = document.getElementById('notificationsWrap');
+const filtersRow = document.getElementById('filtersRow');
+
+function setActiveFilterUI() {
+  filtersRow.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === activeFilter);
+  });
+}
+
+function renderNotifications() {
+  const currentUser = getCurrentUser();
+  if (!currentUser) {
+    window.location.href = 'Login_Signup.html';
+    return;
+  }
+
+  // Fetch mock notifications
+  let notifications = getUserNotifications(currentUser.id);
+  
+  // Update time ago for all notifications
+  notifications = notifications.map(n => ({
+    ...n,
+    timeAgo: getTimeAgo(n.timestamp)
+  }));
+  
+  setActiveFilterUI();
+  
+  const filtered = notifications.filter(n => 
+    activeFilter === 'all' ? true : n.type === activeFilter
+  );
+  
+  if (filtered.length === 0) {
+    wrap.innerHTML = `
+      <div class="empty">
+        <i class="fa-solid fa-bell-slash" style="font-size: 4rem; color: #ccc; margin-bottom: 1rem;"></i>
+        <h4 style="color:#666; font-weight:700;">No notifications in this category.</h4>
+        <p style="color:#999;">You're all caught up!</p>
+      </div>
+    `;
+    return;
+  }
+  
+  wrap.innerHTML = filtered.map(n => {
+      let dashboardUrl;
+      let viewParam = 'dashboardView'; // Default for recipient
+      let finalUrl;
+
+      // --- CRITICAL REDIRECTION LOGIC (The fix is applied here) ---
+      // Check for the specific title used when a donor submits a donation (from storage.js: createNotification)
+      if (n.title === 'DONATION SUBMITTED') { 
+          // If the title matches, force redirect to Donor Dashboard
+          dashboardUrl = 'donor_dashboard.html';
+          viewParam = 'table'; // Not used in donor_dashboard.html logic but set for completeness
+          finalUrl = `${dashboardUrl}`; // Donor dashboard does not currently use URL params for view control
+      } else {
+          // Default logic for all other notifications (matches, reminders, etc. redirect to Recipient Dashboard)
+          dashboardUrl = 'recipient_dashboard.html';
+          
+          if (n.type === 'match') {
+              viewParam = 'donationStatusView'; 
+          } else if (n.type === 'update') {
+              viewParam = 'manageRequestView';
+          }
+          
+          finalUrl = `${dashboardUrl}?view=${viewParam}`;
+          if (n.requestId) {
+              finalUrl += `&requestId=${n.requestId}`;
+          }
+      }
+      
+      // Render the card with the calculated redirection URL
+      return `
+        <div class="notif-card" 
+             data-id="${n.id}" 
+             data-url="${finalUrl}"
+             onclick="window.location.href=this.dataset.url;">
+          ${n.badge ? `<div class="notif-badge">New</div>` : ''}
+          <div class="notif-head">
+            <div class="notif-icon">${n.icon}</div>
+            <div class="notif-title">${escapeHtml(n.title)}</div>
+          </div>
+          <div class="notif-body">${escapeHtml(n.message)}</div>
+          <div class="notif-time">${escapeHtml(n.timeAgo)}</div>
+          <div class="notif-dismiss" data-id="${n.id}">✕</div>
+        </div>
+      `;
+  }).join('');
+
+  wrap.querySelectorAll('.notif-dismiss').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      // Stop propagation to prevent the card's onclick (redirection) from firing
+      e.stopPropagation(); 
+      const id = btn.dataset.id;
+      deleteNotification(id);
+      renderNotifications();
+    });
+  });
+}
+
+// Filters
+filtersRow.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeFilter = btn.dataset.filter;
+    renderNotifications();
+  });
+});
+
+// Initial Render
+document.addEventListener('DOMContentLoaded', () => {
+  const currentUser = getCurrentUser();
+  if (!currentUser) {
+    alert('Please login to view notifications');
+    window.location.href = 'Login_Signup.html';
+    return;
+  }
+  renderNotifications();
+  
+  // Auto-refresh every 5 seconds
+  setInterval(renderNotifications, 5000);
+});
+</script>
+<script src="storage.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

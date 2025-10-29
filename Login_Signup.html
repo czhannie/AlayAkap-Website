@@ -1,0 +1,519 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlayAkap - Login / Register</title>
+  <meta name="description" content="AlayAkap - Login or Register">
+  <meta name="theme-color" content="#ec4899">
+  <style>
+    :root {
+        --bg: #e7e7e7; 
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background:var(--bg);
+      color: #4b5563;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
+      animation: float 20s ease-in-out infinite;
+    }
+    
+    body::after {
+      content: '';
+      position: absolute;
+      bottom: -50%;
+      left: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.08) 0%, transparent 70%);
+      animation: float 25s ease-in-out infinite reverse;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, 30px); }
+    }
+    
+    .back-home {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      z-index: 20;
+    }
+    
+    .back-home a {
+      display: flex;
+      align-items: center;
+      color: #ec4899;
+      text-decoration: none;
+      font-weight: 500;
+      background: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 9999px;
+      box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.15);
+      transition: all 0.3s;
+    }
+    
+    .back-home a:hover {
+      color: #db2777;
+      box-shadow: 0 10px 15px -3px rgba(236, 72, 153, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .back-home svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-right: 0.5rem;
+    }
+    
+    .card-container {
+      background: rgba(255, 255, 255, 0.95);
+      width: 100%;
+      max-width: 28rem;
+      border-radius: 1rem;
+      box-shadow: 0 20px 25px -5px rgba(236, 72, 153, 0.3);
+      padding: 2rem;
+      position: relative;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+    
+    .logo-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    
+    .logo-header img {
+      width: 4rem;
+      height: 4rem;
+      margin-right: 0.75rem;
+    }
+    
+    .logo-header h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: #ec4899;
+    }
+    
+    .tagline {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-bottom: 1.5rem;
+    }
+    
+    .alert {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+    
+    .alert-error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+    
+    .alert-success {
+      background-color: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+    
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 0.25rem;
+    }
+    
+    .form-group input {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 0.375rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+    
+    .form-group input::placeholder {
+      color: #9ca3af;
+    }
+    
+    .form-group input:focus {
+      border-color: #ec4899;
+      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+      transform: translateY(-1px);
+    }
+    
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(to right, #ec4899, #db2777);
+      color: white;
+      font-weight: 600;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 9999px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 10px 15px -3px rgba(236, 72, 153, 0.2);
+      transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -5px rgba(236, 72, 153, 0.4);
+      background: linear-gradient(to right, #db2777, #be185d);
+    }
+    
+    .forgot-password {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.75rem;
+    }
+    
+    .forgot-password button {
+      background: none;
+      border: none;
+      color: #ec4899;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    
+    .forgot-password button:hover {
+      color: #db2777;
+    }
+    
+    .toggle-form {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 1.5rem;
+    }
+    
+    .toggle-form button {
+      background: none;
+      border: none;
+      color: #ec4899;
+      font-weight: 700;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    
+    .toggle-form button:hover {
+      color: #db2777;
+    }
+    
+    .footer {
+      position: absolute;
+      bottom: 2rem;
+      text-align: center;
+      width: 100%;
+    }
+    
+    .footer p {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+    
+    @media (max-width: 640px) {
+      .card-container {
+        max-width: 90%;
+      }
+      
+      .back-home {
+        top: 1rem;
+        left: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="back-home">
+    <a href="Homepage.html">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Back to Home
+    </a>
+  </div>
+
+  <div class="card-container">
+   <div class="logo-header">
+  <img src="logo.png" alt="AlayAkap Logo"/>
+</div>
+    <p class="tagline">Make a difference, one donation at a time</p>
+    
+    <div id="alertContainer"></div>
+
+    <form id="login-form" class="form-container" novalidate>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="Enter email" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="Enter password" required>
+      </div>
+      <button type="submit" class="btn-primary">Login</button>
+      <p class="forgot-password">
+        Forgot your password? 
+        <button type="button" id="forgotPasswordBtn">Reset</button>
+      </p>
+    </form>
+
+    <form id="register-form" class="form-container hidden" novalidate>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="register-name" placeholder="Enter full name" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="register-email" placeholder="Enter email" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="register-password" placeholder="Create password" required>
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="register-confirm" placeholder="Confirm password" required>
+      </div>
+      <button type="submit" class="btn-primary">Register</button>
+    </form>
+
+    <form id="forgot-form" class="form-container hidden" novalidate>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="forgot-email" placeholder="Enter your email" required>
+      </div>
+      <button type="submit" class="btn-primary">Send Reset Link</button>
+    </form>
+
+    <div class="toggle-form">
+      <span id="toggle-text">Don't have an account?</span>
+      <button type="button" id="toggle-btn">Register</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 AlayAkap. All rights reserved.</p>
+  </div>
+
+  <script>
+    // Functions specific to this page
+    function showAlert(message, type) {
+      const container = document.getElementById('alertContainer');
+      const alertClass = type === 'error' ? 'alert-error' : 'alert-success';
+      container.innerHTML = `<div class="alert ${alertClass}">${message}</div>`;
+      setTimeout(() => {
+        container.innerHTML = '';
+      }, 5000);
+    }
+
+    function toggleForm(mode) {
+      const loginForm = document.getElementById("login-form");
+      const registerForm = document.getElementById("register-form");
+      const forgotForm = document.getElementById("forgot-form");
+      const toggleText = document.getElementById("toggle-text");
+      const toggleBtn = document.getElementById("toggle-btn");
+      const alertContainer = document.getElementById('alertContainer');
+
+      alertContainer.innerHTML = '';
+      loginForm.classList.add("hidden");
+      registerForm.classList.add("hidden");
+      forgotForm.classList.add("hidden");
+
+      if (mode === "login") {
+        loginForm.classList.remove("hidden");
+        toggleText.textContent = "Don't have an account?";
+        toggleBtn.textContent = "Register";
+      }
+      else if (mode === "register") {
+        registerForm.classList.remove("hidden");
+        toggleText.textContent = "Already have an account?";
+        toggleBtn.textContent = "Login";
+      }
+      else if (mode === "forgot") {
+        forgotForm.classList.remove("hidden");
+        toggleText.textContent = "Remembered your password?";
+        toggleBtn.textContent = "Back to Login";
+      }
+    }
+
+    // Login form handler
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const { getUsers, setCurrentUserId } = window.StorageManager;
+
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      
+      // FIXED: Added check for empty fields
+      if (!email || !password) {
+        showAlert('Please fill out all fields.', 'error');
+        return;
+      }
+      
+      const users = getUsers();
+      const user = users.find(u => u.email === email && u.password === password);
+      
+      if (user) {
+        setCurrentUserId(user.id);
+        showAlert('Login successful! Redirecting...', 'success');
+        setTimeout(() => {
+          window.location.href = 'Homepage.html';
+        }, 1000);
+      } else {
+        showAlert('Invalid email or password. Please try again.', 'error');
+      }
+    });
+
+    // Register form handler
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const { generateId, getUsers, setUsers, setCurrentUserId } = window.StorageManager;
+      
+      const name = document.getElementById('register-name').value.trim();
+      const email = document.getElementById('register-email').value.trim();
+      const password = document.getElementById('register-password').value;
+      const confirmPassword = document.getElementById('register-confirm').value;
+      
+      // FIXED: Added check for empty fields
+      if (!name || !email || !password || !confirmPassword) {
+        showAlert('Please fill out all fields.', 'error');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showAlert('Passwords do not match!', 'error');
+        return;
+      }
+      
+      if (password.length < 6) {
+        showAlert('Password must be at least 6 characters long.', 'error');
+        return;
+      }
+      
+      const users = getUsers();
+      
+      if (users.find(u => u.email === email)) {
+        showAlert('Email already registered. Please login instead.', 'error');
+        return;
+      }
+      
+      const newUser = {
+        id: generateId('U'),
+        name: name,
+        email: email,
+        password: password,
+        role: 'user',
+        createdAt: new Date().toISOString()
+      };
+      
+      users.push(newUser);
+      setUsers(users);
+      setCurrentUserId(newUser.id);
+      
+      showAlert('Registration successful! Redirecting...', 'success');
+      setTimeout(() => {
+        window.location.href = 'Homepage.html';
+      }, 1000);
+    });
+
+    // Forgot password form handler
+    document.getElementById('forgot-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const { getUsers } = window.StorageManager;
+      
+      const email = document.getElementById('forgot-email').value.trim();
+
+      // FIXED: Added check for empty fields
+      if (!email) {
+        showAlert('Please enter your email address.', 'error');
+        return;
+      }
+
+      const users = getUsers();
+      
+      if (users.find(u => u.email === email)) {
+        showAlert('Password reset link sent to your email!', 'success');
+        setTimeout(() => {
+          toggleForm('login');
+        }, 2000);
+      } else {
+        showAlert('Email not found. Please register first.', 'error');
+      }
+    });
+
+    // Toggle button handler
+    document.getElementById('toggle-btn').addEventListener('click', function() {
+      const currentText = this.textContent;
+      if (currentText === 'Register') {
+        toggleForm('register');
+      } else if (currentText === 'Login') {
+        toggleForm('login');
+      } else if (currentText === 'Back to Login') {
+        toggleForm('login');
+      }
+    });
+
+    // Forgot password button handler
+    document.getElementById('forgotPasswordBtn').addEventListener('click', function() {
+      toggleForm('forgot');
+    });
+  </script>
+
+  <script src="storage.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>

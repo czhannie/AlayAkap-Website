@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlayAkap - Frequently Asked Questions</title>
+    <meta name="description" content="AlayAkap - Frequently Asked Questions about the platform.">
+    <meta name="theme-color" content="#ec4899">
+    <link rel="icon" href="icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        /* Replicating all necessary styles from Homepage.html for a consistent design */
+        :root {
+            --accent: #df1360;
+            --light-pink: #fce7f3;
+            --dark-gray: #374151;
+            --text-dark: #111;
+            --gray: #ccc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #e7e7e7;
+            color: #4b5563;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+            margin-left: 100px;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #831843;
+        }
+        
+        /* --- SIDEBAR STYLES (Fixed position) --- */
+        .sidebar {
+            width: 100px;
+            background: var(--accent);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            gap: 18px;
+            flex-shrink: 0;
+            position: fixed; 
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+        }
+        .logo-placeholder {
+            width: 80px;
+            height: 80px;
+            background-color: transparent;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .nav-item {
+            width: 100%;
+        }
+        .icon-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 65px;
+            text-decoration: none;
+            color: white;
+            transition: background 0.18s ease, transform .15s ease;
+            position: relative;
+        }
+        .icon-link i {
+            font-size: 28px;
+        }
+        .icon-link:hover {
+            background: rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .icon-link.active {
+            background: #fff;
+            color: var(--accent);
+            border-right: 5px solid white;
+            transform: translateY(-2px);
+        }
+        /* Adjusted active state for the Home link */
+        .sidebar .nav-item:first-child .icon-link { /* Assuming the first nav-item is always Home */
+            /* Removed the incorrect visual distinction for non-active link, relying purely on the .active class now */
+        }
+        /* --- END SIDEBAR STYLES --- */
+        
+        /* --- HEADER & TITLE STYLES --- */
+        .page-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 36px 1rem 0 36px;
+            background-color: #e7e7e7; 
+        }
+        
+        h1.title { 
+            font-family: 'Poppins', sans-serif; 
+            font-weight: 900; 
+            font-size: 36px; 
+            margin: 0; 
+            color: var(--text-dark); 
+        }
+
+        .accent-line {
+            width: 180px; 
+            height: 6px; 
+            background: var(--accent); 
+            border-radius: 4px; 
+            margin: 12px 0 24px;
+            margin-left: 36px;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        /* New button styles (from the general design language) */
+        .btn-secondary {
+            text-decoration: none;
+            color: var(--dark-gray);
+            border: 2px solid #ddd;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-secondary:hover {
+            background: var(--light-pink);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-primary {
+            text-decoration: none;
+            background: var(--accent);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: #be185d; /* Slightly darker pink for hover */
+        }
+
+        /* --- PILL BUTTON STYLING --- */
+        .page-links-container {
+            padding: 0 1rem 20px 36px;
+            margin-bottom: 30px;
+        }
+        .pill-links {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .pill {
+            text-decoration: none;
+            color: var(--dark-gray);
+            border: 2px solid #ddd;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .pill:hover {
+            background: var(--light-pink);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .pill.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        /* --- END PILL BUTTON STYLING --- */
+        
+        /* Section Styles (for FAQ section) */
+        .section {
+            padding: 4rem 1rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: #4b5563;
+            margin-bottom: 3rem;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        .footer {
+            background: #111827;
+            color: #d1d5db;
+            padding: 4rem 1rem 2rem;
+            margin-top: 50px; /* Added margin for separation */
+        }
+        
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer h3 {
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer a {
+            color: #d1d5db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        .footer a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            max-width: 1280px;
+            margin: 0 auto;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            /* Restore full width and remove sidebar on small screens */
+            body {
+                margin-left: 0;
+            }
+            .sidebar {
+                display: none;
+            }
+            .page-header-container {
+                padding: 1rem 1rem 0;
+            }
+            .page-links-container {
+                padding: 0 1rem 20px;
+            }
+        }
+        
+        /* --- FAQ-Specific Styles from Homepage.html --- */
+        .max-w-4xl { max-width: 56rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+
+        .faq-item {
+            border: 1px solid #fce7f3; 
+            border-radius: 0.5rem; 
+            overflow: hidden; 
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        
+        .faq-header {
+            background-color: #fff; 
+            padding: 1rem 1.5rem; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .faq-question {
+            color: #1f2937; 
+            font-size: 1.125rem;
+            font-weight: 700; 
+            flex-grow: 1; 
+            position: relative;
+            padding-right: 30px; 
+        }
+        
+        .faq-answer {
+            background-color: #fff; 
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            box-shadow: inset 0 3px 6px -3px rgba(236, 72, 153, 0.1);
+            border-top: 1px solid #fce7f3; 
+        }
+        .faq-answer.open {
+            max-height: 300px; /* Sufficient height for most answers */
+            padding: 0.5rem 1.5rem 1.5rem; 
+        }
+        .faq-answer p {
+            margin-top: 0.5rem;
+            color: #4b5563;
+            font-weight: 400; 
+        }
+        
+        /* Pseudo-Element for Arrow Icon */
+        .faq-question:after {
+            content: '\2303'; 
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 15px; 
+            height: 15px;
+            color: #6b7280; 
+            font-size: 1rem;
+            line-height: 1;
+            /* Default state (closed/hidden answer): Pointing DOWN (180 deg) */
+            transform: translateY(-50%) rotate(180deg); 
+            transition: transform 0.3s;
+        }
+        
+        /* When the header is OPEN, the arrow points UP (0 deg) */
+        .faq-header.open .faq-question:after {
+            transform: translateY(-50%) rotate(0deg); 
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <aside class="sidebar">
+        <div class="logo-placeholder">
+            <img src="logo.png" alt="AlayAkap Logo">
+        </div>
+        <div class="nav-item"><a href="Homepage.html" class="icon-link active" title="Home"><i class="fa-solid fa-house"></i></a></div>
+        <div class="nav-item"><a href="donation_listing.html" class="icon-link" title="Donation Listings"><i class="fa-solid fa-list"></i></a></div>
+        <div class="nav-item"><a href="donor_dashboard.html" class="icon-link" title="Donor Dashboard"><i class="fa-solid fa-handshake"></i></a></div>
+        <div class="nav-item"><a href="recipient_dashboard.html" class="icon-link" title="Recipient Dashboard"><i class="fa-solid fa-hand-holding-heart"></i></a></div>
+        <div class="nav-item"><a href="notifications.html" class="icon-link" title="Notifications"><i class="fa-solid fa-bell"></i></a></div>
+    </aside>
+
+    <div class="page-header-title">
+        <div class="page-header-container">
+            <a href="Homepage.html" style="text-decoration: none;">
+                <h1 class="title">HOMEPAGE</h1>
+            </a>
+            <div class="auth-buttons">
+                </div>
+        </div>
+        <div class="accent-line"></div>
+    </div>
+    <div class="page-links-container">
+        <div class="container mx-auto px-4">
+            <div class="pill-links">
+                <a href="aboutus.html" class="pill">About Us</a>
+                <a href="contactus.html" class="pill">Contact Us</a>
+                <a href="faq.html" class="pill active">FAQ</a> </div>
+        </div>
+    </div>
+    
+    <main>
+        <section id="faq" class="section">
+            <div class="container mx-auto px-4">
+                
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                    <p class="section-subtitle" style="margin-bottom: 0;">Get answers to the most common questions about donation on our platform.</p>
+                </div>
+                
+                <div class="max-w-4xl" style="margin: 0 auto; padding: 0 1rem;">
+                    <div class="space-y-4">
+                        <div class="faq-item shadow-md" onclick="toggleFAQ('faq-1', 'header-1')">
+                            <div id="header-1" class="faq-header">
+                                <h4 class="faq-question">How do I begin donating or requesting items on the website?</h4>
+                            </div>
+                            <div id="faq-1" class="faq-answer">
+                                <p>You must register or log in via the Login/Signup page. The website uses local storage to track your session, and accessing protected pages like dashboards or listings will prompt you to log in if you haven't already.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item shadow-md" onclick="toggleFAQ('faq-2', 'header-2')">
+                            <div id="header-2" class="faq-header">
+                                <h4 class="faq-question">As a recipient, how do I request a donation?</h4>
+                            </div>
+                            <div id="faq-2" class="faq-answer">
+                                <p>You navigate to the Recipient Dashboard. From there, click the "Post New Request" card to open the request form. You will fill in details like the item name, category, quantity, your name, contact, and address, then click "Submit Request".</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item shadow-md" onclick="toggleFAQ('faq-3', 'header-3')">
+                            <div id="header-3" class="faq-header">
+                                <h4 class="faq-question">Where can I see a list of items that are needed?</h4>
+                            </div>
+                            <div id="faq-3" class="faq-answer">
+                                <p>All active donation requests are listed on the Donation Listings page. You can browse all requests or use the search bar and category filters (e.g., Clothes, Food, Medicine) to find specific items requested by recipients.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item shadow-md" onclick="toggleFAQ('faq-4', 'header-4')">
+                            <div id="header-4" class="faq-header">
+                                <h4 class="faq-question">How do I make a donation to a request?</h4>
+                            </div>
+                            <div id="faq-4" class="faq-answer">
+                                <p>On the Donation Listings page, click the "Donate" button next to the item. A "Confirm Donation" modal will appear where you enter your Donor Name, Contact (phone/email), Quantity, and your preferred Delivery Option (Drop-off, Meet-up, or Pick-up). Submitting this creates a new donation record.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item shadow-md" onclick="toggleFAQ('faq-5', 'header-5')">
+                            <div id="header-5" class="faq-header">
+                                <h4 class="faq-question">Can I request multiple donations at once?</h4>
+                            </div>
+                            <div id="faq-5" class="faq-answer">
+                                <p>Yes. You can request multiple items, but each request must be submitted separately.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item shadow-md" onclick="toggleFAQ('faq-6', 'header-6')">
+                            <div id="header-6" class="faq-header">
+                                <h4 class="faq-question">How does the website handle the status of requests and donations?</h4>
+                            </div>
+                            <div id="faq-6" class="faq-answer">
+                                <p>Requests start as 'Active'. When a donor commits an item, the Request status may change to 'Pending' or 'In progress'. Donations start as 'Pending'. Donors can later use their dashboard to update the status, and recipients can view the progress on the Donation Status screen.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item shadow-md" onclick="toggleFAQ('faq-7', 'header-7')">
+                            <div id="header-7" class="faq-header">
+                                <h4 class="faq-question">Will I be notified if my request gets a match or if a donor changes a status?</h4>
+                            </div>
+                            <div id="faq-7" class="faq-answer">
+                                <p>Yes. The system creates notifications for all users when a new request is posted, notifies recipients of a Donation Match, and alerts both donors and recipients of status updates (e.g., changing from 'Pending' to 'Completed'). You can view them on the Notification Center.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item shadow-md" onclick="toggleFAQ('faq-8', 'header-8')">
+                            <div id="header-8" class="faq-header">
+                                <h4 class="faq-question">Do I need to switch accounts if I want to donate and request items?</h4>
+                            </div>
+                            <div id="faq-8" class="faq-answer">
+                                <p>No. You can use the same account for both actions.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item shadow-md" onclick="toggleFAQ('faq-9', 'header-9')">
+                            <div id="header-9" class="faq-header">
+                                <h4 class="faq-question">I forgot my login details. How can I reset my password?</h4>
+                            </div>
+                            <div id="faq-9" class="faq-answer">
+                                <p>On the Logi/Signup page, click the "Forgot your password? Reset" button. You will be prompted to enter your email. If your email is registered, the system will display a success message indicating a password reset link has been "sent".</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item shadow-md" onclick="toggleFAQ('faq-10', 'header-10')">
+                            <div id="header-10" class="faq-header">
+                                <h4 class="faq-question">Where can I find more information about AlayAkap?</h4>
+                            </div>
+                            <div id="faq-10" class="faq-answer">
+                                <p>You can visit the About Us page to read about the mission, vision, and core values. The Contact Us page provides a form, email address and phone number.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div>
+                    <h3>AlayAkap</h3>
+                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">Making a difference together, one donation at a time.</p>
+                </div>
+                <div>
+                    <h3>Quick Links</h3>
+                    <a href="Homepage.html">Home</a>
+                    <a href="aboutus.html">About Us</a>
+                    <a href="contactus.html">Contact</a> <a href="donation_listing.html">Donate</a>
+                    <a href="recipient_dashboard.html">Request Help</a>
+                </div>
+                <div>
+                    <h3>Dashboards</h3>
+                        <a href="donation_listing.html">Donation Listing</a>
+                        <a href="donor_dashboard.html">Donor Dashboard</a>
+                        <a href="recipient_dashboard.html">Recipient Dashboard</a>
+                        <a href="notifications.html">Notifications</a>
+                </div>
+                <div>
+                    <h3>Contact</h3>
+                    <p style="font-size: 0.875rem;">Agoo, La Union</p>
+                    <p style="font-size: 0.875rem;">info@alay-akap.com</p>
+                    <p style="font-size: 0.875rem;">+639 1234 56789</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2025 AlayAkap. All rights reserved.
+            </div>
+        </footer>
+        
+        <script>
+            function toggleFAQ(contentId, headerId) {
+                const content = document.getElementById(contentId);
+                const header = document.getElementById(headerId);
+                
+                if (content.classList.contains('open')) {
+                    content.classList.remove('open');
+                    header.classList.remove('open'); 
+                } else {
+                    // Close all other open FAQ answers (optional, but good UX)
+                    document.querySelectorAll('.faq-answer.open').forEach(item => {
+                        if (item.id !== contentId) {
+                            item.classList.remove('open');
+                        }
+                    });
+                    document.querySelectorAll('.faq-header.open').forEach(item => {
+                        if (item.id !== headerId) {
+                            item.classList.remove('open');
+                        }
+                    });
+
+                    content.classList.add('open');
+                    header.classList.add('open'); 
+                }
+            }
+        </script>
+        </body>
+    </html>

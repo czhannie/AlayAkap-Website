@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlayAkap - Contact Us</title>
+  <meta name="description" content="AlayAkap - Contact Us">
+  <meta name="theme-color" content="#ec4899">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+ <style>
+    /* Global Variables for Consistency */
+    :root {
+        --accent: #df1360;
+        --light-pink: #fce7f3;
+        --dark-gray: #374151;
+        --text-dark: #111;
+        --bg: #e7e7e7; /* Matching dashboard background */
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    /* --- FONT-FACE DEFINITIONS --- */
+    
+    /* Inter Regular (for body text) */
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: local('Inter Regular'), local('Inter-Regular'),
+           url('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2') format('woff2');
+    }
+    
+    /* Poppins SemiBold (for general headings, weight 600) */
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: local('Poppins SemiBold'), local('Poppins-SemiBold'),
+           url('https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLEj6Z1xlFQ.woff2') format('woff2');
+    }
+
+    /* Poppins Black (for the h1.title, weight 900) */
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 900;
+      font-display: swap;
+      src: local('Poppins Black'), local('Poppins-Black'),
+           url('https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLBT5Z1xlFQ.woff2') format('woff2');
+    }
+    
+    /* --- END FONT-FACE DEFINITIONS --- */
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg);
+      color: #4b5563;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #831843;
+      /* Removed the specific font-weight: 700 to match other files */
+    }
+
+    /* --- SIDEBAR STYLES --- */
+    .sidebar {
+        width: 100px;
+        background: var(--accent);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 0;
+        gap: 18px;
+        flex-shrink: 0;
+        position: fixed; 
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 100;
+    }
+    .logo-placeholder {
+        width: 80px;
+        height: 80px;
+        background-color: transparent;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-bottom: 20px;
+    }
+    .logo-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .nav-item {
+        width: 100%;
+    }
+    .icon-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 65px;
+        text-decoration: none;
+        color: white;
+        transition: background 0.18s ease, transform .15s ease;
+        position: relative;
+    }
+    .icon-link i {
+        font-size: 28px;
+    }
+    .icon-link:hover {
+        background: rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+    }
+    .icon-link.active {
+        background: #fff;
+        color: var(--accent);
+        border-right: 5px solid white;
+        transform: translateY(-2px);
+    }
+    /* --- END SIDEBAR STYLES --- */
+    
+    /* MODIFIED: This container now takes on the 100px left margin */
+    .page-header-title, .page-links-container, main, footer { 
+        margin-left: 100px;
+    }
+
+    /* --- TITLE HEADER STYLES (Updated padding) --- */
+    .page-header-title {
+        background-color: var(--bg);
+    }
+    .page-header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        /* Critical: Use 36px left padding for alignment */
+        padding: 36px 1rem 0 36px; 
+    }
+    h1.title {
+        /* This rule now works because the 900-weight font is loaded */
+        font-family: 'Poppins', sans-serif; 
+        font-weight: 900; 
+        font-size: 36px; 
+        margin: 0; 
+        color: var(--text-dark);
+    }
+    .accent-line {
+        width: 180px; 
+        height: 6px; 
+        background: var(--accent); 
+        border-radius: 4px; 
+        margin: 12px 0 24px;
+        /* Critical: Use 36px left margin for alignment */
+        margin-left: 36px; 
+    }
+    .auth-buttons {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+    /* --- END TITLE HEADER STYLES --- */
+
+    /* --- PILL BUTTON STYLING (Updated padding and active state) --- */
+    .page-links-container {
+        /* Critical: Use 36px left padding for alignment */
+        padding: 0 1rem 20px 36px; 
+        margin-bottom: 30px;
+    }
+    .pill-links {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .pill {
+        text-decoration: none;
+        color: var(--dark-gray);
+        border: 2px solid #ddd;
+        background: white;
+        padding: 8px 16px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .pill:hover {
+        background: var(--light-pink);
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+    .pill.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+    }
+    /* --- END PILL BUTTON STYLING --- */
+
+
+    /* Main content padding adjustment */
+    .pt-24 { padding-top: 2rem; } 
+
+
+    /* Original utility styles below */
+    .container { width: 100%; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+    @media (min-width: 640px) { .container { max-width: 640px; } }
+    @media (min-width: 768px) { .container { max-width: 768px; } }
+    @media (min-width: 1024px) { .container { max-width: 1024px; } }
+    @media (min-width: 1280px) { .container { max-width: 1280px; } }
+    
+    .card-hover-effect { transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; }
+    .card-hover-effect:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    .gradient-button { background-image: linear-gradient(to right, #ec4899, #db2777); transition: all 0.3s ease-in-out; color: white; font-weight: 600; border: none; cursor: pointer; }
+    .gradient-button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -5px rgba(236, 72, 153, 0.4); background-image: linear-gradient(to right, #db2777, #be185d); }
+    
+    .fixed { position: fixed; }
+    .top-0 { top: 0; }
+    .left-0 { left: 0; }
+    .w-full { width: 100%; }
+    .z-50 { z-index: 50; } 
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .px-8 { padding-left: 2rem; padding-right: 2rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+    .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .p-6 { padding: 1.5rem; }
+    .p-8 { padding: 2rem; }
+    /* Removed pt-24 definition that was previously overriding main content padding */
+    .pt-8 { padding-top: 2rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .mb-1 { margin-bottom: 0.25rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-12 { margin-bottom: 3rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-10 { margin-top: 2.5rem; }
+    .mt-16 { margin-top: 4rem; }
+    .space-x-4 > * + * { margin-left: 1rem; }
+    .space-x-6 > * + * { margin-left: 1.5rem; }
+    .space-x-8 > * + * { margin-left: 2rem; }
+    .space-y-1 > * + * { margin-top: 0.25rem; }
+    .space-y-4 > * + * { margin-top: 1rem; }
+    .space-y-6 > * + * { margin-top: 1.5rem; }
+    .grid { display: grid; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .gap-8 { gap: 2rem; }
+    @media (min-width: 768px) { .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } .md\:flex { display: flex; } }
+    .max-w-4xl { max-width: 56rem; }
+    .h-12 { width: 3rem; height: 3rem; }
+    .w-12 { width: 3rem; height: 3rem; }
+    .h-6 { width: 1.5rem; height: 1.5rem; }
+    .text-center { text-align: center; }
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+    .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+    .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .block { display: block; }
+    .text-white { color: #ffffff; }
+    .text-gray-300 { color: #d1d5db; }
+    .text-gray-600 { color: #4b5563; }
+    .text-gray-700 { color: #374151; }
+    .text-pink-600 { color: #ec4899; }
+    .text-pink-700 { color: #db2777; }
+    .text-indigo-600 { color: #4f46e5; }
+    .bg-white { background-color: #ffffff; }
+    .bg-gray-900 { background-color: #111827; }
+    .bg-gray-700 { background-color: #374151; }
+    .bg-pink-100 { background-color: #fce7f3; }
+    .bg-pink-600 { background-color: #ec4899; }
+    .bg-indigo-600 { background-color: #4f46e5; }
+    .bg-indigo-700 { background-color: #4338ca; }
+    .border { border-width: 1px; }
+    .border-gray-300 { border-color: #d1d5db; }
+    .border-gray-700 { border-color: #374151; }
+    .border-t { border-top-width: 1px; }
+    .rounded-md { border-radius: 0.375rem; }
+    .rounded-full { border-radius: 9999px; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .rounded-2xl { border-radius: 1rem; }
+    .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    .transition { transition-property: all; transition-duration: 150ms; }
+    .duration-300 { transition-duration: 300ms; }
+    .hidden { display: none; }
+    .hover\:text-pink-600:hover { color: #ec4899; }
+    .hover\:text-pink-700:hover { color: #db2777; }
+    .hover\:text-indigo-600:hover { color: #4f46e5; }
+    .hover\:text-white:hover { color: #ffffff; }
+    .hover\:bg-indigo-700:hover { background-color: #4338ca; }
+    .not-italic { font-style: normal; }
+    input, textarea { font-family: inherit; font-size: 100%; outline: none; }
+    input:focus, textarea:focus { border-color: #ec4899; box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1); }
+    a { text-decoration: none; color: inherit; }
+
+    /* Mobile Media Query for Header Alignment */
+    @media (max-width: 768px) {
+        /* Reset content alignment for mobile */
+        .page-header-title, .page-links-container, main, footer { 
+            margin-left: 0; 
+        }
+        .sidebar { display: none; }
+        /* Reset padding for mobile */
+        .page-header-container {
+            padding: 1rem 1rem 0 1rem !important; /* Reset padding to 1rem for mobile */
+        }
+        .page-links-container {
+            padding: 0 1rem 20px 1rem !important; /* Reset padding to 1rem for mobile */
+        }
+        .accent-line {
+            margin-left: 1rem !important; /* Align accent line with 1rem padding */
+        }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+      <div class="logo-placeholder">
+          <img src="logo.png" alt="AlayAkap Logo">
+      </div>
+      <div class="nav-item"><a href="Homepage.html" class="icon-link active" title="Home"><i class="fa-solid fa-house"></i></a></div>
+      <div class="nav-item"><a href="donation_listing.html" class="icon-link" title="Donation Listings"><i class="fa-solid fa-list"></i></a></div>
+      <div class="nav-item"><a href="donor_dashboard.html" class="icon-link" title="Donor Dashboard"><i class="fa-solid fa-handshake"></i></a></div>
+      <div class="nav-item"><a href="recipient_dashboard.html" class="icon-link" title="Recipient Dashboard"><i class="fa-solid fa-hand-holding-heart"></i></a></div>
+      <div class="nav-item"><a href="notifications.html" class="icon-link" title="Notifications"><i class="fa-solid fa-bell"></i></a></div>
+  </aside>
+
+    <div class="page-header-title">
+        <div class="page-header-container">
+            <a href="Homepage.html" style="text-decoration: none;">
+                <h1 class="title">HOMEPAGE</h1>
+            </a>
+            <div class="auth-buttons">
+                </div>
+        </div>
+        <div class="accent-line"></div>
+    </div>
+    <div class="page-links-container">
+        <div class="pill-links">
+            <a href="aboutus.html" class="pill">About Us</a>
+            <a href="contactus.html" class="pill active">Contact Us</a>
+            <a href="faq.html" class="pill">FAQ</a> </div>
+    </div>
+    <main class="py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-4">Get in Touch</h2>
+      <p class="text-center text-gray-600 mb-12">We’d love to hear from you! Please fill out the form below or reach out through our details.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-xl p-8 space-y-4">
+          <h3 class="text-2xl font-bold text-pink-600 mb-4">Send us a Message</h3>
+          <form class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-700">Full Name</label>
+              <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter your name">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-700">Email</label>
+              <input type="email" class="w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter your email">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-700">Subject</label>
+              <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter subject">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-700">Message</label>
+              <textarea rows="5" class="w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Write your message"></textarea>
+            </div>
+            <button type="submit" class="w-full gradient-button px-8 py-3 rounded-full font-bold shadow-lg">Send Message</button>
+          </form>
+        </div>
+
+        <div class="space-y-6">
+          <div class="bg-white rounded-2xl shadow-xl p-6 card-hover-effect">
+            <div class="w-12 h-12 flex items-center justify-center bg-pink-100 rounded-full mb-3 text-pink-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold mb-2 text-pink-600">Our Office</h3>
+            <p class="text-sm text-gray-600">Agoo, La Union<br>Philippines</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow-xl p-6 card-hover-effect">
+            <div class="w-12 h-12 flex items-center justify-center bg-pink-100 rounded-full mb-3 text-pink-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold mb-2 text-pink-600">Call Us</h3>
+            <p class="text-sm text-gray-600">+639 1234 56789</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow-xl p-6 card-hover-effect">
+            <div class="w-12 h-12 flex items-center justify-center bg-pink-100 rounded-full mb-3 text-pink-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold mb-2 text-pink-600">Email Us</h3>
+            <p class="text-sm text-gray-600">info@alay-akap.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-gray-900 text-gray-300 py-16">
+    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div>
+        <h3 class="text-white text-xl font-bold mb-4">AlayAkap</h3>
+        <p class="text-sm">Making a difference together, one donation at a time.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-2">Quick Links</h4>
+        <ul class="space-y-1 text-sm">
+          <li><a href="Homepage.html" class="hover:text-white transition duration-300">Home</a></li>
+          <li><a href="aboutus.html" class="hover:text-white transition duration-300">About Us</a></li>
+          <li><a href="donation_listing.html" class="hover:text-white transition duration-300">Donate</a></li>
+          <li><a href="recipient_dashboard.html" class="hover:text-white transition duration-300">Request Help</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-2">Dashboards</h4>
+        <ul class="space-y-1 text-sm">
+          <li><a href="donation_listing.html" class="hover:text-white transition duration-300">Donation Listing</a></li>
+          <li><a href="donor_dashboard.html" class="hover:text-white transition duration-300">Donor Dashboard</a></li>
+          <li><a href="recipient_dashboard.html" class="hover:text-white transition duration-300">Recipient Dashboard</a></li>
+          <li><a href="notifications.html" class="hover:text-white transition duration-300">Notifications</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-2">Contact Us</h4>
+        <address class="not-italic text-sm">
+          <p>Agoo, La Union</p>
+          <p>info@alay-akap.com</p>
+          <p>+639 1234 56789</p>
+        </address>
+      </div>
+    </div>
+    <div class="container mx-auto px-4 mt-10 text-center text-sm border-t border-gray-700 pt-8">
+      &copy; 2025 AlayAkap. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="storage.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>

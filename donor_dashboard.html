@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Donor Dashboard | Alay AKAP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/horizon" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/lovelo" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #df1360;
+      --bg: #e7e7e7;
+      --light-gray: #f2f2f2;
+      --text-dark: #111;
+      --gray: #ccc;
+    }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 100px;
+      background: var(--accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0;
+      gap: 18px;
+      flex-shrink: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      z-index: 100;
+    }
+    .logo-placeholder {
+      width: 80px; height: 80px;
+      background-color: white;
+      border-radius: 8px;
+      display:flex; align-items:center; justify-content:center;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .nav-item { width: 100%; }
+    .icon-link {
+      display: flex; justify-content: center; align-items: center;
+      width: 100%; height: 65px; text-decoration: none; color: white;
+      transition: background 0.18s ease, transform .15s ease;
+    }
+    .icon-link i { font-size: 28px; }
+    .icon-link:hover { background: rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .icon-link.active { background: #fff; color: var(--accent); border-right: 5px solid white; transform: translateY(-2px); }
+
+    .main {
+      flex: 1; padding: 36px; overflow: auto;
+      margin-left: 100px;
+      display: flex; flex-direction: column;
+    }
+    h1.title { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 36px; margin: 0 0 8px; color: var(--text-dark); }
+     .accent-line { width: 180px; height: 6px; background: var(--accent); border-radius: 4px; margin: 12px 0 24px; }
+
+    .top-row { display:flex; gap:18px; align-items:center; flex-wrap:wrap; margin-bottom:18px; }
+    .search-container { position:relative; flex:1; min-width:260px; }
+    .search-input {
+      width:100%; height:50px; border-radius:12px; border:1px solid var(--gray);
+      padding:12px 18px 12px 50px; font-size:15px;
+      background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="%23777" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5a6.5 6.5 0 1 0-6.5 6.5c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>') no-repeat 18px center;
+    }
+    .search-input::placeholder{ color:#999; }
+    .clear-search{ position:absolute; right:12px; top:50%; transform:translateY(-50%); border:none; background:none; font-size:18px; color:#999; display:none; cursor:pointer; }
+    .results-label-inline{ position:absolute; left:50px; top:50%; transform:translateY(-50%); background:var(--accent); color:#fff; padding:6px 10px; border-radius:12px; font-weight:600; font-size:13px; display:none; pointer-events:none; }
+    .filter-button{ width:260px; height:50px; border-radius:12px; border:1px solid var(--gray); background:#fff; display:flex; align-items:center; justify-content:center; padding-right:40px; cursor:pointer; }
+    .category-dropdown-list{ position:absolute; right:40px; top:150px; width:260px; background:#fff; border:1px solid var(--accent); border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.08); padding:8px; display:none; z-index:1000; max-height:240px; overflow:auto; }
+    .category-dropdown-list button{ 
+      display:block; 
+      width:100%; 
+      text-align:left; 
+      padding:10px 12px; 
+      border-radius:8px; 
+      border:1px solid var(--gray); 
+      background:#fff; 
+      margin-bottom:8px; 
+      cursor:pointer; 
+      transition: all 0.2s ease;
+      color: var(--text-dark);
+    }
+    .category-dropdown-list button:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .table-wrap{ 
+      background:#fff; 
+      border-radius:12px; 
+      overflow:hidden; 
+      box-shadow:0 6-px 18px rgba(0,0,0,0.04); 
+      flex:1; 
+      display:flex; 
+      flex-direction:column; 
+      overflow-y: auto; 
+      /* ADDED: min-height to ensure space for the 4 rows */
+      min-height: 300px; 
+    }
+    table.custom{ 
+      width:100%; 
+      border-collapse:collapse; 
+      /* FIX: Removed flex:1 to prevent table from growing and creating space above rows */
+      /* flex:1; */ 
+      border-spacing: 0; 
+    }
+    table.custom thead th{ background:var(--accent); color:#fff; padding:14px; font-weight:700; text-align:center; }
+    table.custom thead th:first-child{ text-align:left; padding-left:24px; }
+    table.custom tbody td{ padding:8px 14px; text-align:center; vertical-align:middle; font-size:15px; }
+    table.custom tbody td:first-child{ text-align:left; padding-left:24px; font-weight:600; }
+    table.custom tbody tr:nth-child(even){ background:var(--light-gray); }
+    .status-pill{ display:inline-block; padding:8px 14px; border-radius:18px; font-weight:700; font-size:13px; }
+    .status-pending{ background:#ffd6df; color:#111; }
+    .status-completed{ background:#d6d6d6; color:#111; }
+    .btn-edit, .btn-delete, .btn-done{ border-radius:8px; padding:8px 12px; font-weight:600; min-width:80px; margin-right:6px; }
+    .btn-edit{ border:1px solid #111; background:#fff; }
+    .btn-delete{ background:#ff4d4d; color:#fff; border:none; }
+    .btn-done{ background:#4d4d4d; color:#fff; border:none; min-width:110px; }
+    .btn-done[disabled]{ background:#aaa; }
+
+    /* REMOVED: .main nav styling as nav is moved outside the table-wrap and will naturally flow below it */
+    /* .main nav {
+      position: relative; 
+      background: var(--bg);
+      padding: 12px 0;
+      z-index: 50;
+    } */
+    .pagination{ margin:0; display:flex; justify-content:center; gap:6px; list-style:none; padding:0; }
+    .pagination .page-item .page-link{ padding:8px 12px; border-radius:8px; background:#fff; border:1px solid #eee; cursor:pointer; }
+
+    .modal-dialog{ max-width:700px; }
+    .modal-content{ border-radius:18px; overflow:hidden; }
+    .modal-title-bar{ background:var(--accent); color:white; padding:14px 20px; text-align:center; }
+    .modal-title{ font-family:'Bebas Neue', sans-serif; font-weight:700; margin:0; font-size:20px; letter-spacing:1px; }
+    .edit-modal-body{ padding:26px 34px; }
+    .edit-modal-body form{ display:grid; grid-template-columns:1fr 1fr; gap:18px 20px; }
+    .edit-modal-body label{ display:block; margin-bottom:6px; font-weight:600; }
+    .edit-modal-body input[type="text"], .edit-modal-body select{ padding:10px 12px; border-radius:8px; border:1px solid var(--gray); width:100%; }
+    .form-group.full-width{ grid-column:1 / span 2; }
+    /* UPDATED: Photo upload group styles */
+    .photo-upload-group { cursor: pointer; } 
+    .photo-placeholder{ 
+      width:120px; height:120px; border-radius:12px; border:2px solid var(--gray); 
+      display:flex; align-items:center; justify-content:center; 
+      background:#fafafa; color:var(--gray); font-size:36px; 
+      position: relative; 
+      overflow: hidden; 
+    }
+    .modal-footer{ display:flex; justify-content:flex-end; gap:12px; padding:18px 28px; border-top:none; }
+    .btn-save{ background:var(--accent); color:#fff; border:none; padding:10px 22px; border-radius:8px; font-weight:700; }
+    .btn-cancel{ background:#fff; color:var(--accent); border:1px solid var(--accent); padding:10px 22px; border-radius:8px; font-weight:700; }
+
+    .confirm-box .modal-content{ background:var(--accent); color:#fff; border-radius:14px; padding:28px; }
+    .confirm-box .modal-body{ font-weight:800; font-size:18px; margin-bottom:18px; text-align:center; }
+    .confirm-box .btn-confirm{ background:#fff; color:var(--accent); padding:10px 24px; border-radius:8px; border:none; font-weight:700; }
+    .confirm-box .btn-cancel-light{ background:transparent; color:#fff; border:1px solid #fff; padding:10px 24px; border-radius:8px; font-weight:700; }
+
+    @media (max-width:900px){
+      .sidebar{ display:none; }
+      .main{ padding:18px; margin-left: 0; }
+    }
+
+    .pagination .page-item.active .page-link {
+    background-color: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    z-index: 2;
+}
+
+.pagination .page-item.disabled .page-link {
+    opacity: 0.6;
+    pointer-events: none;
+}
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="logo-placeholder" style="background-color: transparent; border: none;">
+    <img src="logo.png" alt="AlayAkap Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;">
+</div>
+    <div class="nav-item"><a href="Homepage.html" class="icon-link" title="Home"><i class="fa-solid fa-house"></i></a></div>
+    <div class="nav-item"><a href="donation_listing.html" class="icon-link" title="Donor Listing"><i class="fa-solid fa-list"></i></a></div>
+    <div class="nav-item"><a href="donor_dashboard.html" class="icon-link active" title="Donor Dashboard"><i class="fa-solid fa-handshake"></i></a></div>
+    <div class="nav-item"><a href="recipient_dashboard.html" class="icon-link" title="Recipient Dashboard"><i class="fa-solid fa-hand-holding-heart"></i></a></div>
+    <div class="nav-item"><a href="notifications.html" class="icon-link" title="Notifications"><i class="fa-solid fa-bell"></i></a></div>
+  </aside>
+
+  <main class="main container-fluid">
+    <h1 class="title">DONOR DASHBOARD</h1>
+    <div class="accent-line"></div>
+
+    <div class="top-row">
+      <div class="search-container">
+        <input id="searchInput" class="search-input" placeholder="Search donations...">
+        <button id="clearSearchBtn" class="clear-search">✕</button>
+        <span id="resultsLabelInline" class="results-label-inline">Results:</span>
+      </div>
+      <div id="filterButton" class="filter-button">Filter by Category</div>
+      <div id="categoryDropdownList" class="category-dropdown-list" aria-hidden="true"></div>
+    </div>
+
+   <div class="table-wrap">
+      <table class="custom" id="donationTable">
+        <thead>
+          <tr>
+            <th>Donation Name</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      </div>
+    <nav style="margin-top: 18px;"><ul id="pagination" class="pagination"></ul></nav>
+  </main>
+
+  <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header p-0">
+          <div class="modal-title-bar w-100"><h5 class="modal-title">EDIT DONATION</h5></div>
+        </div>
+        <div class="edit-modal-body">
+          <form id="editForm">
+            <input type="hidden" id="donationId">
+            <div class="form-group">
+              <label>Donation Title</label>
+              <input id="titleInput" type="text" placeholder="Type here....">
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <select id="categoryInput">
+                <option value="" disabled selected>Select</option>
+                <option>Clothes</option>
+                <option>Food</option>
+                <option>Medicine</option>
+                <option>School Supplies</option>
+                <option>Hygiene Items</option>
+                <option>Kitchenware</option>
+              </select>
+            </div>
+            <div class="form-group full-width">
+              <label>Description</label>
+              <input id="descInput" type="text" placeholder="Type here....">
+            </div>
+            <div class="form-group">
+              <label>Delivery Option</label>
+              <div class="delivery-options-group">
+                <label><input type="radio" name="deliveryOption" value="Pick-up by recipient"> Pick-up by recipient</label>
+                <label><input type="radio" name="deliveryOption" value="Drop off by donor"> Drop off by donor</label>
+                <label><input type="radio" name="deliveryOption" value="Meet-up"> Meet-up</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Location</label>
+              <input id="locationInput" type="text" placeholder="Type here....">
+            </div>
+            <div class="photo-upload-group">
+              <label>Upload a Photo</label>
+              <input type="file" id="photoInput" style="display: none;" accept="image/*">
+              <div class="photo-placeholder" id="photoPlaceholder">
+                <img id="photoPreview" src="" alt="Donation Photo Preview" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; display: none;">
+                <span class="material-icons" id="placeholderIcon">image</span>
+              </div>
+            </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button id="saveBtn" class="btn btn-save">Save Changes</button>
+          <button class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade confirm-box" id="deleteConfirm" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">Are you sure you want to delete this donation?</div>
+        <div class="modal-footer">
+          <button id="confirmDeleteBtn" class="btn btn-confirm">Confirm</button>
+          <button class="btn btn-cancel-light" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function idNow(){ return 'id' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+    
+    function getCurrentUser() {
+      const userId = localStorage.getItem('ak_currentUser');
+      if (!userId) return null;
+      const users = JSON.parse(localStorage.getItem('ak_users') || '[]');
+      return users.find(u => u.id === userId);
+    }
+
+    // Changed storage key to match global standard
+function getUserDonations(userId) {
+    const donations = JSON.parse(localStorage.getItem('ak_all_donations') || '[]');
+    return donations.filter(d => d.donorId === userId);
+}
+
+   function updateUserDonation(donationId, updates) {
+      const donations = JSON.parse(localStorage.getItem('ak_all_donations') || '[]');
+      const index = donations.findIndex(d => d.id === donationId);
+      if (index > -1) {
+        donations[index] = { ...donations[index], ...updates };
+        localStorage.setItem('ak_all_donations', JSON.stringify(donations));
+      }
+    }
+
+    function deleteUserDonation(donationId) {
+      let donations = JSON.parse(localStorage.getItem('ak_all_donations') || '[]');
+      donations = donations.filter(d => d.id !== donationId);
+      localStorage.setItem('ak_all_donations', JSON.stringify(donations));
+    }
+
+    function loadUserDonations() {
+      const currentUser = getCurrentUser();
+      if (!currentUser) {
+        window.location.href = 'Login_Signup.html';
+        return [];
+      }
+      return getUserDonations(currentUser.id);
+    }
+
+    let donations = loadUserDonations();
+
+    const rowsPerPage = 4; // Set to 4 items per page
+    let currentPage = 1;
+    let currentCategoryFilter = '';
+    let currentSearchQuery = '';
+
+    const categories = ["Clothes", "Food", "Medicine", "School Supplies", "Hygiene Items", "Kitchenware"];
+    const filterButton = document.getElementById('filterButton');
+    const categoryDropdownList = document.getElementById('categoryDropdownList');
+    const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const resultsLabelInline = document.getElementById('resultsLabelInline');
+
+    function updateSearchVisuals() {
+      const isFiltered = currentCategoryFilter || currentSearchQuery;
+      if (currentCategoryFilter) {
+        searchInput.value = currentCategoryFilter;
+        resultsLabelInline.style.display = 'block';
+        searchInput.style.paddingLeft = '145px';
+        clearSearchBtn.style.display = 'block';
+        filterButton.textContent = currentCategoryFilter;
+      } else if (currentSearchQuery) {
+        searchInput.value = currentSearchQuery;
+        resultsLabelInline.style.display = 'none';
+        searchInput.style.paddingLeft = '50px';
+        clearSearchBtn.style.display = 'block';
+      } else {
+        searchInput.value = '';
+        searchInput.placeholder = 'Search donations...';
+        resultsLabelInline.style.display = 'none';
+        searchInput.style.paddingLeft = '50px';
+        clearSearchBtn.style.display = 'none';
+        filterButton.textContent = 'Filter by Category';
+      }
+      searchInput.classList.toggle('filtered', isFiltered);
+    }
+
+    // UPDATED renderTable FUNCTION
+    function renderTable() {
+      donations = loadUserDonations();
+      const tableBody = document.getElementById('tableBody'); 
+      const filtered = applyFilters();
+      const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
+      if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
+      const start = (currentPage - 1) * rowsPerPage;
+      const pageItems = filtered.slice(start, start + rowsPerPage);
+
+      updateSearchVisuals();
+
+      let tableRowsHTML = '';
+      
+      // CHECK FOR NO RESULTS AND DISPLAY MESSAGE
+      if (pageItems.length === 0) {
+        // Display a "No results found" message across all 4 columns
+        tableRowsHTML = `
+          <tr>
+            <td colspan="4" style="text-align: center; padding: 30px; color: #555; font-style: italic;">
+              No donations found.
+            </td>
+          </tr>
+        `;
+      } else {
+        // Existing logic to generate table rows
+        tableRowsHTML = pageItems.map(item => `
+          <tr data-id="${item.id}">
+            <td>${item.title}<div style="font-size:11px; color:#666; line-height: 1.2;">${item.category}</div></td>
+            <td>${item.date}</td>
+            <td>${item.status === 'Completed' ? '<span class="status-pill status-completed">Completed</span>' : '<span class="status-pill status-pending">Pending</span>'}</td>
+            <td>
+              <button class="btn-edit" data-action="edit" data-id="${item.id}">Edit</button>
+              <button class="btn-delete" data-action="delete" data-id="${item.id}">Delete</button>
+              <button class="btn-done" data-action="done" data-id="${item.id}" ${item.status==='Completed'?'disabled':''}>Mark as Done</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      tableBody.innerHTML = tableRowsHTML; 
+
+      renderPagination(totalPages);
+      attachRowListeners();
+    }
+    // END OF UPDATED renderTable FUNCTION
+
+    function renderPagination(totalPages) {
+      const pag = document.getElementById('pagination');
+      let html = `<li class="page-item ${currentPage===1?'disabled':''}"><a class="page-link" href="#" data-page="${currentPage-1}">Previous</a></li>`;
+      let startPage = Math.max(1, currentPage-2);
+      let endPage = Math.min(totalPages, currentPage+2);
+      if (endPage-startPage<4) {
+        if (startPage===1) endPage=Math.min(totalPages,5);
+        if (endPage===totalPages) startPage=Math.max(1,totalPages-4);
+      }
+      for (let i=startPage;i<=endPage;i++){
+        html += `<li class="page-item ${i===currentPage?'active':''}"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+      }
+      html += `<li class="page-item ${currentPage===totalPages?'disabled':''}"><a class="page-link" href="#" data-page="${currentPage+1}">Next</a></li>`;
+      pag.innerHTML = html;
+      pag.querySelectorAll('a').forEach(a=>{
+        a.addEventListener('click', e=>{
+          e.preventDefault();
+          const p = parseInt(a.dataset.page);
+          if(!isNaN(p) && p>=1 && p<=totalPages){currentPage=p; renderTable();}
+        });
+      });
+    }
+
+    function applyFilters() {
+      const q = currentSearchQuery.toLowerCase();
+      const cat = currentCategoryFilter;
+      return donations.filter(d=>{
+        const matchQ = !q || (d.title + d.category + d.desc).toLowerCase().includes(q);
+        const matchC = !cat || d.category === cat;
+        if (cat && q) {
+          const searchMatchesTitle = d.title.toLowerCase().includes(q.replace('results:','').trim());
+          return matchC && searchMatchesTitle;
+        }
+        return matchQ && matchC;
+      });
+    }
+
+    searchInput.addEventListener('input', ()=>{ currentSearchQuery = searchInput.value; currentCategoryFilter=''; filterButton.textContent='Filter by Category'; filterButton.classList.remove('active'); currentPage=1; renderTable(); });
+    clearSearchBtn.addEventListener('click', ()=>{ currentSearchQuery=''; currentCategoryFilter=''; searchInput.value=''; filterButton.textContent='Filter by Category'; currentPage=1; renderTable(); });
+
+    filterButton.addEventListener('click', ()=>{ const isHidden = categoryDropdownList.style.display==='none'||categoryDropdownList.style.display===''; categoryDropdownList.style.display=isHidden?'block':'none'; filterButton.classList.toggle('active', isHidden); if(isHidden){ categoryDropdownList.innerHTML = categories.map(cat=>`<button data-category="${cat}" class="filter-option">${cat}</button>`).join(''); categoryDropdownList.querySelectorAll('.filter-option').forEach(btn=>{ btn.addEventListener('click', e=>{ const newCat = e.target.dataset.category; currentCategoryFilter = newCat; currentSearchQuery = ''; filterButton.textContent=newCat; categoryDropdownList.style.display='none'; filterButton.classList.remove('active'); currentPage=1; renderTable(); }); }); }});
+    document.addEventListener('click', e=>{ if(!filterButton.contains(e.target) && !categoryDropdownList.contains(e.target)){ categoryDropdownList.style.display='none'; filterButton.classList.remove('active'); }});
+
+    const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirm'));
+    let deleteId = null;
+
+    function attachRowListeners() {
+      document.querySelectorAll('[data-action="edit"]').forEach(btn=>btn.onclick=()=>openEditModal(btn.dataset.id));
+      document.querySelectorAll('[data-action="delete"]').forEach(btn=>btn.onclick=()=>openDeleteModal(btn.dataset.id));
+      document.querySelectorAll('[data-action="done"]').forEach(btn=>btn.onclick=()=>markAsDone(btn.dataset.id));
+    }
+
+    // START: Image Upload Functions
+    
+    // Function to handle the file upload preview
+    function setupPhotoUpload() {
+      const photoPlaceholder = document.getElementById('photoPlaceholder');
+      const photoInput = document.getElementById('photoInput');
+      const photoPreview = document.getElementById('photoPreview');
+      const placeholderIcon = document.getElementById('placeholderIcon');
+
+      // 1. Trigger file input on placeholder click
+      photoPlaceholder.onclick = () => photoInput.click();
+
+      // 2. Handle file selection and preview
+      photoInput.onchange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            photoPreview.src = e.target.result;
+            photoPreview.style.display = 'block';
+            placeholderIcon.style.display = 'none';
+          };
+          reader.readAsDataURL(file);
+        } else {
+          // If a file was removed/canceled after selection, reset
+          photoPreview.src = '';
+          photoPreview.style.display = 'none';
+          placeholderIcon.style.display = 'block';
+        }
+      };
+    }
+
+    // Function to reset the photo input for a clean state when modal opens/closes
+    function resetPhotoInput() {
+        const photoInput = document.getElementById('photoInput');
+        const photoPreview = document.getElementById('photoPreview');
+        const placeholderIcon = document.getElementById('placeholderIcon');
+
+        // Clear the file input value
+        photoInput.value = ''; 
+        // Clear the preview image
+        photoPreview.src = '';
+        photoPreview.style.display = 'none';
+        placeholderIcon.style.display = 'block';
+    }
+
+    // Attach reset function to modal events
+    document.getElementById('editModal').addEventListener('hidden.bs.modal', resetPhotoInput);
+
+    // Call setup once the script loads
+    setupPhotoUpload();
+    // END: Image Upload Functions
+
+
+    function openEditModal(id){
+      const item=donations.find(x=>x.id===id); if(!item)return;
+      
+      // Reset photo input first
+      resetPhotoInput();
+      
+      document.getElementById('donationId').value=item.id;
+      document.getElementById('titleInput').value=item.title;
+      document.getElementById('categoryInput').value=item.category||'';
+      document.getElementById('descInput').value=item.desc||'';
+      document.getElementById('locationInput').value=item.location||'';
+      const deliveryValue=item.deliveryOption||"Pick-up by recipient";
+      document.querySelectorAll('input[name="deliveryOption"]').forEach(radio=>{ radio.checked=radio.value===deliveryValue; });
+      
+      // Load existing photo if available
+      const photoPreview = document.getElementById('photoPreview');
+      const placeholderIcon = document.getElementById('placeholderIcon');
+      if (item.photoDataUrl) {
+        photoPreview.src = item.photoDataUrl;
+        photoPreview.style.display = 'block';
+        placeholderIcon.style.display = 'none';
+      } 
+      
+      editModal.show();
+    }
+
+    document.getElementById('saveBtn').addEventListener('click', ()=>{
+      const id=document.getElementById('donationId').value;
+      const idx=donations.findIndex(x=>x.id===id);
+      if(idx>-1){
+        const photoInput = document.getElementById('photoInput');
+        const photoPreview = document.getElementById('photoPreview');
+        
+        // Determine the photo data URL to save
+        let photoDataUrl = donations[idx].photoDataUrl || ''; 
+        
+        // If a new file was selected, use the preview source
+        if (photoInput.files.length > 0) {
+            photoDataUrl = photoPreview.src;
+        } else if (photoPreview.src === '') {
+            // If photo was explicitly removed or no photo exists
+            photoDataUrl = '';
+        } else {
+            // Keep the old photo if no new file was selected
+            photoDataUrl = donations[idx].photoDataUrl;
+        }
+
+
+        const updates = {
+          title: document.getElementById('titleInput').value,
+          category: document.getElementById('categoryInput').value,
+          desc: document.getElementById('descInput').value,
+          location: document.getElementById('locationInput').value,
+          deliveryOption: document.querySelector('input[name="deliveryOption"]:checked')?.value||'Pick-up by recipient',
+          photoDataUrl: photoDataUrl // Save the photo data URL
+        };
+        updateUserDonation(id, updates);
+        donations[idx] = { ...donations[idx], ...updates };
+        renderTable();
+        editModal.hide();
+      }
+    });
+
+    function openDeleteModal(id){ deleteId=id; deleteModal.show(); }
+    document.getElementById('confirmDeleteBtn').addEventListener('click', ()=>{
+      if(deleteId){ 
+        deleteUserDonation(deleteId);
+        donations=donations.filter(d=>d.id!==deleteId); 
+        deleteId=null; 
+        // If the current page is now empty after deletion, go back one page
+        const filteredCount = applyFilters().length;
+        const totalPages = Math.max(1, Math.ceil(filteredCount / rowsPerPage));
+        if (currentPage > totalPages && currentPage > 1) {
+            currentPage = totalPages;
+        }
+
+        renderTable(); 
+        deleteModal.hide(); 
+      }
+    });
+
+    function markAsDone(id){ 
+      const idx=donations.findIndex(d=>d.id===id); 
+      if(idx>-1){ 
+        updateUserDonation(id, { status: 'Completed' });
+        donations[idx].status='Completed'; 
+        renderTable(); 
+      } 
+    }
+
+    renderTable();
+  </script>
+   <script>
+        // Sticky header with scroll effect
+        window.addEventListener('scroll', () => {
+          const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+    
+    <script src="storage.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>
